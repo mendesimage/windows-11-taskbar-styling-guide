@@ -200,17 +200,6 @@ to:
 
 ---
 
-## Full Luminosity Theme
-To achieve a complete Luminosity experience, download the listed mods and select "**Luminosity**" on each.
-- Windows 11 Taskbar Styler
-- Windows 11 Start Menu Styler
-- Windows 11 Notification Center Styler
-- Windows 11 File Explorer Styler
-
-I also highly recommend **Translucent Windows** with **Mica** or **MicaAlt** selected as backdrop.
-
----
-
 ## Theme selection
 
 The theme is integrated into the mod and can be selected directly from the mod's
