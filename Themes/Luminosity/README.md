@@ -172,22 +172,114 @@ The theme changes the following elements:
 
 ## Guides
 
-### Animations
+### Custom Animations Settings
 
-To customize the animations, look for the style constant 
+To customize the animations, look for this style constant 
 ```
-AnimationSettings=<TransitionCollection><EntranceThemeTransition IsStaggeringEnabled=\"True\" FromHorizontalOffset=\"-50\" FromVerticalOffset=\"50\" /></TransitionCollection>
+AnimationSettings=<TransitionCollection><EntranceThemeTransition IsStaggeringEnabled="True" FromHorizontalOffset="-50" FromVerticalOffset="50" /></TransitionCollection>
 ```
 
-- For all items to display immediately, set `IsStaggeringEnabled=\"True\"` to `False`.
+- For all items to display immediately, set `IsStaggeringEnabled=` from `"True"` to `"False"`.
 
 - `FromHorizontalOffset` and `FromVerticalOffset` are the directions where the items come from.
   - Horizontal **Positive** values is **Right**, **Negative** is **Left**.
   - Vertical **Positive** values is **Down**, **Negative** is **Up**.
   
-### Dock Width
+### Custom Dock Width
 
-**⌛ Work in Progress**
+The Dock's width change based on your system's resolution. If you want a custom width, follow this guide.
+
+<details>
+<summary>Click to expand guide</summary>
+
+Locate the following targets and edit these values to customize the dock width.
+
+The examples are for a **wider dock**.
+
+## 1. Main taskbar width
+
+Target:
+`Taskbar.TaskbarFrame`
+
+Value:
+`Margin=250,0,250,0`
+
+Margin format:
+`Left, Top, Right, Bottom`
+
+To make the dock wider, decrease the **Left** and **Right** values.
+
+Example:
+`Margin=5,0,5,0`
+
+---
+
+## 2. Background alignment fix
+
+Target:
+`Taskbar.TaskbarFrame > Grid#RootGrid`
+
+Value:
+`Margin=0,0,500,5`
+
+The `500` value must equal:
+
+`Left + Right margins from step 1`
+
+Example:
+
+If **Taskbar.TaskbarFrame** uses:
+`Margin=5,0,5,0`
+
+Then **Taskbar.TaskbarFrame > Grid#RootGrid** uses:
+`Margin=0,0,10,5`
+
+---
+
+## 3. System tray alignment for extra space
+
+Target:
+`Grid#SystemTrayFrameGrid`
+
+Value:
+`Margin=-307,-2,250,4`
+
+Two values must be updated:
+
+**Right value** (`250`)
+
+Use the same Left/Right value from step 1.
+
+Example:
+`5`
+
+---
+
+**Left value** (`-307`)
+
+This value must be recalculated.
+
+Formula:
+`Step 1 value + 57`
+
+Example:
+`5 + 57 = 62`
+
+Apply the minus sign:
+`-62`
+
+Final result:
+`Margin=-62,-2,5,4`
+
+---
+
+**⚠️ Important notes**
+
+- Forgetting the **minus sign** (`-`) will break the alignment.
+- If the **Right** values do not match, the tray alignment will be incorrect.
+- The **Left** value reduces the gap between the taskbar icons and the system tray.
+- Large changes may require small adjustments depending on your custom setting, especially when the taskbar is almost full.
+</details>
 
 ---
 
@@ -212,7 +304,7 @@ to:
 ```
 Taskbar.TaskbarFrame
 ```
-And delete ´Height=53´ (Dock) or `Height=30` (Compact)
+And delete `Height=53` (Dock) or `Height=30` (Compact)
 
 
 ---
