@@ -170,15 +170,24 @@ The theme changes the following elements:
 - Tooltips
 - Removed drop shadows
 
-## Animations Guide
+## Guides
 
-To customize the animations, look for the last line `"styleConstants[7]": "AnimationSettings=<TransitionCollection><EntranceThemeTransition IsStaggeringEnabled=\"True\" FromHorizontalOffset=\"-50\" FromVerticalOffset=\"50\" /></TransitionCollection>"`
+### Animations
+
+To customize the animations, look for the style constant 
+```
+AnimationSettings=<TransitionCollection><EntranceThemeTransition IsStaggeringEnabled=\"True\" FromHorizontalOffset=\"-50\" FromVerticalOffset=\"50\" /></TransitionCollection>
+```
 
 - For all items to display immediately, set `IsStaggeringEnabled=\"True\"` to `False`.
 
 - `FromHorizontalOffset` and `FromVerticalOffset` are the directions where the items come from.
   - Horizontal **Positive** values is **Right**, **Negative** is **Left**.
   - Vertical **Positive** values is **Down**, **Negative** is **Up**.
+  
+### Dock Width
+
+**⌛ Work in Progress**
 
 ---
 
@@ -188,15 +197,23 @@ I didn't know how to fix these. I couldn't find the correct target names, or I'm
 
 - **Widget/Weather:** The bottom text line has incorrect placement in **Compact version** (renders off-screen).
 - **Icon Hitboxes (Dock):** The Taskbar's rounded corners slightly limit the icon hitbox on the **top and bottom**, which makes it **impossible to minimize windows by clicking in those areas**.
-- **Left Taskbar Alignment (Dock):** When using **Left Taskbar Alignment**, the Widget clip into the **SystemTray**. As a workaround, you can change:
-```"controlStyles[45].styles[0]": "Margin=-307,-2,250,4",```
+- **Left Taskbar Alignment (Dock):** When using **Left Taskbar Alignment**, the Widget clip into the **SystemTray**. As a workaround, you can locate:
+```
+Grid#SystemTrayFrameGrid
+```
+And change:
+`Margin=-307,-2,250,4",`
 to:
-```"controlStyles[45].styles[0]": "Margin=-261,-2,250,4",```
+`Margin=-261,-2,250,4",`
 
 - **SearchBox (Dock/Classic):** Has **mismatched look and position** when typing.
 - **SearchBox (Compact):** Has incorrect styling and positioning in the Compact version.
-- **Missing Acrylic Backdrop:** The **Virtual Desktop Bar** and **Taskbar Overflow Flyout** (when taskbar is full) may not have Acrylic.
-  - I've added a backup blur for the **Virtual Desktop Bar**, but it doesn't have **TintLuminosityOpacity** settings.
+- **`Taskbar height and icon size` incompatibility (Dock/Compact):** to make it compatible, locate:
+```
+Taskbar.TaskbarFrame
+```
+And delete ´Height=53´ (Dock) or `Height=30` (Compact)
+
 
 ---
 
@@ -420,7 +437,7 @@ controlStyles:
       - BorderThickness=$bt
       - BorderBrush:=$bb
       - CornerRadius=$mcr
-      - Margin=0,0,500,5
+      - Margin=0,5,500,5
   - target: Taskbar.TaskbarBackground#BackgroundControl > Windows.UI.Xaml.Controls.Grid > Windows.UI.Xaml.Shapes.Rectangle#BackgroundStroke
     styles:
       - Visibility=Collapsed
