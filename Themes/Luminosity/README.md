@@ -342,6 +342,10 @@ styleConstants:
   - t=Transparent
   - bb=#20FFFFFF
   - bt=1
+  - nbb=<LinearGradientBrush x:Key="ShellTaskbarItemGradientStrokeColorSecondaryBrush" MappingMode="Absolute" StartPoint="0,0" EndPoint="0,3"><LinearGradientBrush.GradientStops><GradientStop Offset="0.33" Color="#1AFFFFFF" /><GradientStop Offset="1" Color="#0FFFFFFF" /></LinearGradientBrush.GradientStops></LinearGradientBrush>
+  - nbt=<SolidColorBrush Color="{ThemeResource ControlFillColorDefault}" />
+  - nbth=<SolidColorBrush Color="{ThemeResource ControlFillColorSecondary}" />
+  - nbtp=<SolidColorBrush Color="{ThemeResource ControlFillColorTertiary}" />
   - AnimationSettings=<TransitionCollection><EntranceThemeTransition IsStaggeringEnabled="True" FromHorizontalOffset="-50" FromVerticalOffset="50" /></TransitionCollection>
 controlStyles:
   - target: Taskbar.TaskbarFrame > Grid#RootGrid > Taskbar.TaskbarBackground > Grid > Rectangle#BackgroundFill
@@ -427,6 +431,17 @@ controlStyles:
     styles:
       - CornerRadius=16
       - Margin=-1,-1,-1,-1
+  - target: Windows.UI.Xaml.Controls.ContentPresenter#BorderElement@CommonStates
+    styles:
+      - Background@Normal:=$t
+      - Background@PointerOver:=$nbth
+      - Background@Pressed:=$nbtp
+      - BorderThickness=2
+      - BorderBrush@Normal:=$t
+      - BorderBrush@PointerOver:=$nbb
+      - BorderBrush@Pressed:=$nbb
+      - BackgroundSizing=InnerBorderEdge
+      - BackgroundTransition:=<BrushTransition Duration="0:0:0.200" />
   - target: Windows.UI.Xaml.Controls.Grid#ModalRootGrid > Windows.UI.Xaml.Controls.Border#BackgroundElement
     styles:
       - Background=Transparent
@@ -529,7 +544,7 @@ controlStyles:
       - BorderThickness=$bt
       - BorderBrush:=$bb
       - CornerRadius=$mcr
-      - Margin=0,5,500,5
+      - Margin=0,0,500,5
   - target: Taskbar.TaskbarBackground#BackgroundControl > Windows.UI.Xaml.Controls.Grid > Windows.UI.Xaml.Shapes.Rectangle#BackgroundStroke
     styles:
       - Visibility=Collapsed
