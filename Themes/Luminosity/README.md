@@ -176,7 +176,7 @@ The theme changes the following elements:
 
 To customize the animations, look for this style constant 
 ```
-AnimationSettings=<TransitionCollection><EntranceThemeTransition IsStaggeringEnabled="True" FromHorizontalOffset="-50" FromVerticalOffset="50" /></TransitionCollection>
+AnimationSettings=IsStaggeringEnabled="True" FromHorizontalOffset="-50" FromVerticalOffset="50"
 ```
 
 - For all items to display immediately, set `IsStaggeringEnabled=` from `"True"` to `"False"`.
@@ -187,89 +187,59 @@ AnimationSettings=<TransitionCollection><EntranceThemeTransition IsStaggeringEna
   
 ### Custom Dock Width
 
-The Dock's width change based on your system's resolution. If you want a custom width, follow this guide.
+The dock's width changes depending on your **screen resolution** using **horizontal margins**. If you want a custom width, follow this guide.
 
 <details>
 <summary>Click to expand guide</summary>
 
-Locate the following targets and edit these values to customize the dock width.
+Locate and edit these `styleConstants` values:
 
-The examples are for a **wider dock**.
+  - DockMargin
+  - DockMarginFix
+  - DockTrayGap
+
+The examples are for a **full length dock** (corner to corner).
 
 ## 1. Main taskbar width
 
-Target:
-`Taskbar.TaskbarFrame`
+`DockMargin=250`
 
-Value:
-`Margin=250,0,250,0`
+This controls the main dock width.
 
-Margin format:
-`Left, Top, Right, Bottom`
+- Smaller value = wider dock
+- Larger value = narrower dock
 
-To make the dock wider, decrease the **Left** and **Right** values.
-
-Example:
-`Margin=5,0,5,0`
+Example: `DockMargin=5`
 
 ---
 
 ## 2. Background alignment fix
 
-Target:
-`Taskbar.TaskbarFrame > Grid#RootGrid`
+`DockMarginFix=500`
 
-Value:
-`Margin=0,0,500,5`
-
-The `500` value must equal:
-
-`Left + Right margins from step 1`
+This value must always equal: `DockMargin × 2`
 
 Example:
 
-If **Taskbar.TaskbarFrame** uses:
-`Margin=5,0,5,0`
+If: `DockMargin=5`
 
-Then **Taskbar.TaskbarFrame > Grid#RootGrid** uses:
-`Margin=0,0,10,5`
+Then: `DockMarginFix=10`
 
 ---
 
-## 3. System tray alignment for extra space
+## 3. System Tray margin for extra space
 
-Target:
-`Grid#SystemTrayFrameGrid`
+`DockTrayGap=-307`
 
-Value:
-`Margin=-307,-2,250,4`
+This controls the spacing between the taskbar icons and the system tray.
 
-Two values must be updated:
-
-**Right value** (`250`)
-
-Use the same Left/Right value from step 1.
+Formula: `-(DockMargin + 57)`
 
 Example:
-`5`
 
----
+If: `DockMargin=5`
 
-**Left value** (`-307`)
-
-This value must be recalculated.
-
-Formula:
-`Step 1 value + 57`
-
-Example:
-`5 + 57 = 62`
-
-Apply the minus sign:
-`-62`
-
-Final result:
-`Margin=-62,-2,5,4`
+Then: `DockTrayGap=-62`
 
 ---
 
@@ -289,23 +259,11 @@ I didn't know how to fix these. I couldn't find the correct target names, or I'm
 
 - **Widget/Weather:** The bottom text line has incorrect placement in **Compact version** (renders off-screen).
 - **Icon Hitboxes (Dock):** The Taskbar's rounded corners slightly limit the icon hitbox on the **top and bottom**, which makes it **impossible to minimize windows by clicking in those areas**.
-- **Left Taskbar Alignment (Dock):** When using **Left Taskbar Alignment**, the Widget clip into the **SystemTray**. As a workaround, you can locate:
-```
-Grid#SystemTrayFrameGrid
-```
-And change:
-`Margin=-307,-2,250,4",`
-to:
-`Margin=-261,-2,250,4",`
+- **Left Taskbar Alignment (Dock):** When using **Left Taskbar Alignment**, the Widget clip into the **SystemTray**. As a workaround: In `styleConstants`, change: `DockTrayGap=-307`  to `DockTrayGap=-261`
 
 - **SearchBox (Dock/Classic):** Has **mismatched look and position** when typing.
 - **SearchBox (Compact):** Has incorrect styling and positioning in the Compact version.
-- **`Taskbar height and icon size` incompatibility (Dock/Compact):** to make it compatible, locate:
-```
-Taskbar.TaskbarFrame
-```
-And delete `Height=53` (Dock) or `Height=30` (Compact)
-
+- **`Taskbar height and icon size` incompatibility (Dock/Compact):** to make it compatible, locate the target `Taskbar.TaskbarFrame` and delete the line `- Height=58`
 
 ---
 
@@ -335,6 +293,10 @@ The theme styles can also be imported manually. To do that, follow these steps:
 
 ```yaml
 styleConstants:
+  - DockMargin=250
+  - DockMarginFix=500
+  - DockTrayGap=-307
+  - AnimationSettings=IsStaggeringEnabled="True" FromHorizontalOffset="-50" FromVerticalOffset="50"
   - mbg=<WindhawkBlur BlurAmount="30" TintColor="{ThemeResource CardStrokeColorDefaultSolid}" TintOpacity="0.0" TintLuminosityOpacity="1.0" TintSaturation="1.0" NoiseDensity="1.0" NoiseOpacity="0.1" />
   - bcr=10
   - wcr=20
@@ -346,7 +308,6 @@ styleConstants:
   - nbt=<SolidColorBrush Color="{ThemeResource ControlFillColorDefault}" />
   - nbth=<SolidColorBrush Color="{ThemeResource ControlFillColorSecondary}" />
   - nbtp=<SolidColorBrush Color="{ThemeResource ControlFillColorTertiary}" />
-  - AnimationSettings=<TransitionCollection><EntranceThemeTransition IsStaggeringEnabled="True" FromHorizontalOffset="-50" FromVerticalOffset="50" /></TransitionCollection>
 controlStyles:
   - target: Taskbar.TaskbarFrame > Grid#RootGrid > Taskbar.TaskbarBackground > Grid > Rectangle#BackgroundFill
     styles:
@@ -369,10 +330,10 @@ controlStyles:
   - target: Windows.UI.Xaml.Controls.Border#MultiWindowElement
     styles:
       - CornerRadius=$bcr
-  - target: SystemTray.ChevronIconView
+  - target: SystemTray.ChevronIconView > Windows.UI.Xaml.Controls.Grid#ContainerGrid > Windows.UI.Xaml.Controls.Border#BackgroundBorder
     styles:
       - CornerRadius=$bcr
-      - Margin=0,0,2,0
+      - Margin=0,4,2,4
   - target: SystemTray.NotifyIconView > Windows.UI.Xaml.Controls.Grid#ContainerGrid > Windows.UI.Xaml.Controls.Border#BackgroundBorder
     styles:
       - CornerRadius=$bcr
@@ -396,6 +357,9 @@ controlStyles:
       - BorderThickness=$bt
       - BorderBrush=$bb
       - Shadow:=
+  - target: Taskbar.OverflowToggleButton#OverflowButton > Taskbar.TaskListButtonPanel#OverflowToggleButtonRootPanel > Windows.UI.Xaml.Controls.Border#BackgroundElement
+    styles:
+      - CornerRadius=$bcr
   - target: Windows.UI.Xaml.Controls.Grid#ConfirmatorMainGrid
     styles:
       - Background:=$mbg
@@ -433,10 +397,12 @@ controlStyles:
       - Margin=-1,-1,-1,-1
   - target: Windows.UI.Xaml.Controls.ContentPresenter#BorderElement@CommonStates
     styles:
+      - Background@Disabled:=$t
       - Background@Normal:=$t
       - Background@PointerOver:=$nbth
       - Background@Pressed:=$nbtp
       - BorderThickness=2
+      - BorderBrush@Disabled:=$t
       - BorderBrush@Normal:=$t
       - BorderBrush@PointerOver:=$nbb
       - BorderBrush@Pressed:=$nbb
@@ -524,7 +490,7 @@ controlStyles:
       - Shadow:=
   - target: ScrollViewer#MenuFlyoutPresenterScrollViewer > Border > Grid > ScrollContentPresenter > ItemsPresenter > StackPanel
     styles:
-      - ChildrenTransitions:=$AnimationSettings
+      - ChildrenTransitions:=<TransitionCollection><EntranceThemeTransition $AnimationSettings /></TransitionCollection>
   - target: Grid#LayoutRoot
     styles:
       - BackgroundTransition:=<BrushTransition Duration="0:0:0.100" />
@@ -536,15 +502,15 @@ controlStyles:
       - Visibility=Collapsed
   - target: Taskbar.TaskbarFrame
     styles:
-      - Height=53
-      - Margin=250,0,250,0
+      - Height=58
+      - Margin=$DockMargin,0,$DockMargin,0
   - target: Taskbar.TaskbarFrame > Grid#RootGrid
     styles:
       - Background:=$mbg
       - BorderThickness=$bt
       - BorderBrush:=$bb
       - CornerRadius=$mcr
-      - Margin=0,0,500,5
+      - Margin=0,5,$DockMarginFix,5
   - target: Taskbar.TaskbarBackground#BackgroundControl > Windows.UI.Xaml.Controls.Grid > Windows.UI.Xaml.Shapes.Rectangle#BackgroundStroke
     styles:
       - Visibility=Collapsed
@@ -556,7 +522,7 @@ controlStyles:
       - Margin=0,0,0,-4
   - target: Grid#SystemTrayFrameGrid
     styles:
-      - Margin=-307,-2,250,4
+      - Margin=$DockTrayGap,0,$DockMargin,0
       - HorizontalAlignment=Right
 ```
 </details>
