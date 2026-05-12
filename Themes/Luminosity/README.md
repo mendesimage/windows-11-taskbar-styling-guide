@@ -238,7 +238,7 @@ When using **Left Taskbar Alignment** with Widget, remove the **minus sign** (`-
 
 Like this: `WidgetGap=`
 
-**Note:** `WidgetGap` if off by default on the Classic variant.
+**Note:** `WidgetGap` is off by default on the Classic variant.
 </details>
 
 ---
