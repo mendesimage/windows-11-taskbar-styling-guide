@@ -264,7 +264,7 @@ I didn't know how to fix these. I couldn't find the correct target names, or I'm
 
 - **Widget/Weather (Compact):** The bottom text line has incorrect placement (renders off-screen).
 - **Icon Hitboxes (Dock):** The Taskbar's rounded corners slightly limit the icon hitbox on the **top and bottom**, which makes it **impossible to minimize windows by clicking in those areas**.
-- **Left Taskbar Alignment (Dock):** **Left Taskbar Alignment** is not compatible by default, refer to the [Left Taskbar Alignment Fix Guide](https://github.com/mendesimage/windows-11-taskbar-styling-guide/tree/main/Themes/Luminosity/README.md#left-taskbar-alignment-fix). (testing)
+- **Left Taskbar Alignment (Dock):** **Left Taskbar Alignment** is not compatible by default, refer to the [Left Taskbar Alignment Fix Guide](https://github.com/mendesimage/windows-11-taskbar-styling-guide/blob/main/Themes/Luminosity/README.md#left-taskbar-alignment-fix). (testing)
 - **`Taskbar height and icon size` (Dock/Compact):** `Taskbar height and icon size` is not compatible by default, refer to []() guide.
 - **SearchBox (Dock/Classic):** Has **mismatched look and position** when typing.
 - **SearchBox (Compact):** Has incorrect styling and positioning in the Compact version.
