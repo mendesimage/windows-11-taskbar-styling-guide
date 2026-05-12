@@ -172,19 +172,6 @@ The theme changes the following elements:
 
 ## Guides
 
-### Custom Animations Settings
-
-To customize the animations, look for this style constant 
-```
-AnimationSettings=IsStaggeringEnabled="True" FromHorizontalOffset="-50" FromVerticalOffset="50"
-```
-
-- For all items to display immediately, set `IsStaggeringEnabled=` from `"True"` to `"False"`.
-
-- `FromHorizontalOffset` and `FromVerticalOffset` are the directions where the items come from.
-  - Horizontal **Positive** values is **Right**, **Negative** is **Left**.
-  - Vertical **Positive** values is **Down**, **Negative** is **Up**.
-  
 ### Custom Dock Width
 
 The dock's width changes depending on your **screen resolution** using **horizontal margins**. If you want a custom width, follow this guide.
@@ -196,7 +183,7 @@ Locate and edit these `styleConstants` values:
 
   - DockMargin
   - DockMarginFix
-  - DockTrayGap
+  - DockTrayFix
 
 The examples are for a **full length dock** (corner to corner).
 
@@ -224,31 +211,49 @@ Example:
 If: `DockMargin=5`
 
 Then: `DockMarginFix=10`
+</details>
+ 
+---
+
+### Left Taskbar Alignment Fix
+
+<details>
+<summary>Click to expand guide</summary>
+
+When using **Left Taskbar Alignment** with Widget, remove the **minus sign** (`-`) from `WidgetGap=-`.
+
+Example: `WidgetGap=`
+</details>
 
 ---
 
-## 3. System Tray margin for extra space
+### `Taskbar height and icon size` Compatibility
 
-`DockTrayGap=-307`
+<details>
+<summary>Click to expand guide</summary>
 
-This controls the spacing between the taskbar icons and the system tray.
-
-Formula: `-(DockMargin + 57)`
-
-Example:
-
-If: `DockMargin=5`
-
-Then: `DockTrayGap=-62`
+Removing the line `- Height=58` unlocks height changes, but requires manual adjustment of `DockTrayMarginUp` and `DockTrayMarginDown`.
+</details>
 
 ---
 
-**⚠️ Important notes**
+### Custom Menu Animation Settings
 
-- Forgetting the **minus sign** (`-`) will break the alignment.
-- If the **Right** values do not match, the tray alignment will be incorrect.
-- The **Left** value reduces the gap between the taskbar icons and the system tray.
-- Large changes may require small adjustments depending on your custom setting, especially when the taskbar is almost full.
+Follow this guide to customize the animation behavior.
+
+<details>
+<summary>Click to expand guide</summary>
+
+To customize the animations, look for this style constant 
+```
+AnimationSettings=IsStaggeringEnabled="True" FromHorizontalOffset="-50" FromVerticalOffset="50"
+```
+
+- For all items to display immediately, set `IsStaggeringEnabled=` from `"True"` to `"False"`.
+
+- `FromHorizontalOffset` and `FromVerticalOffset` are the directions where the items come from.
+  - Horizontal **Positive** values is **Right**, **Negative** is **Left**.
+  - Vertical **Positive** values is **Down**, **Negative** is **Up**.
 </details>
 
 ---
@@ -257,13 +262,12 @@ Then: `DockTrayGap=-62`
 
 I didn't know how to fix these. I couldn't find the correct target names, or I'm not sure if they can even be changed/fixed.
 
-- **Widget/Weather:** The bottom text line has incorrect placement in **Compact version** (renders off-screen).
+- **Widget/Weather (Compact):** The bottom text line has incorrect placement (renders off-screen).
 - **Icon Hitboxes (Dock):** The Taskbar's rounded corners slightly limit the icon hitbox on the **top and bottom**, which makes it **impossible to minimize windows by clicking in those areas**.
-- **Left Taskbar Alignment (Dock):** When using **Left Taskbar Alignment**, the Widget clip into the **SystemTray**. As a workaround: In `styleConstants`, change: `DockTrayGap=-307`  to `DockTrayGap=-261`
-
+- **Left Taskbar Alignment (Dock):** **Left Taskbar Alignment** is not compatible by default, refer to the [Left Taskbar Alignment Fix Guide](https://github.com/mendesimage/windows-11-taskbar-styling-guide/tree/main/Themes/Luminosity/README.md#left-taskbar-alignment-fix). (testing)
+- **`Taskbar height and icon size` (Dock/Compact):** `Taskbar height and icon size` is not compatible by default, refer to []() guide.
 - **SearchBox (Dock/Classic):** Has **mismatched look and position** when typing.
 - **SearchBox (Compact):** Has incorrect styling and positioning in the Compact version.
-- **`Taskbar height and icon size` incompatibility (Dock/Compact):** to make it compatible, locate the target `Taskbar.TaskbarFrame` and delete the line `- Height=58`
 
 ---
 
@@ -295,8 +299,11 @@ The theme styles can also be imported manually. To do that, follow these steps:
 styleConstants:
   - DockMargin=250
   - DockMarginFix=500
-  - DockTrayGap=-307
+  - WidgetGap=-
   - AnimationSettings=IsStaggeringEnabled="True" FromHorizontalOffset="-50" FromVerticalOffset="50"
+  - DockTrayMarginUp=1
+  - DockTrayMarginDown=1
+  - AccentColor=<SolidColorBrush Color="{ThemeResource SystemAccentColorLight2}" Opacity="1.0" />
   - mbg=<WindhawkBlur BlurAmount="30" TintColor="{ThemeResource CardStrokeColorDefaultSolid}" TintOpacity="0.0" TintLuminosityOpacity="1.0" TintSaturation="1.0" NoiseDensity="1.0" NoiseOpacity="0.1" />
   - bcr=10
   - wcr=20
@@ -304,7 +311,6 @@ styleConstants:
   - t=Transparent
   - bb=#20FFFFFF
   - bt=1
-  - bt2=2
   - nbb=<LinearGradientBrush x:Key="ShellTaskbarItemGradientStrokeColorSecondaryBrush" MappingMode="Absolute" StartPoint="0,0" EndPoint="0,3"><LinearGradientBrush.GradientStops><GradientStop Offset="0.33" Color="#1AFFFFFF" /><GradientStop Offset="1" Color="#0FFFFFFF" /></LinearGradientBrush.GradientStops></LinearGradientBrush>
   - nbt=<SolidColorBrush Color="{ThemeResource ControlFillColorDefault}" />
   - nbth=<SolidColorBrush Color="{ThemeResource ControlFillColorSecondary}" />
@@ -313,6 +319,9 @@ controlStyles:
   - target: Taskbar.TaskbarFrame > Grid#RootGrid > Taskbar.TaskbarBackground > Grid > Rectangle#BackgroundFill
     styles:
       - Fill:=$mbg
+  - target: Taskbar.AugmentedEntryPointButton#AugmentedEntryPointButton
+    styles:
+      - Margin=0,0,$WidgetGap57,0
   - target: Taskbar.TaskListButtonPanel#ExperienceToggleButtonRootPanel > Windows.UI.Xaml.Controls.Border#BackgroundElement
     styles:
       - CornerRadius=$bcr
@@ -371,6 +380,16 @@ controlStyles:
   - target: Windows.UI.Xaml.Shapes.Rectangle#HorizontalTrackRect
     styles:
       - Fill:=#10FFFFFF
+  - target: WindowsInternal.ComposableShell.Experiences.TextInput.Common.InputSwitcher > ContentControl > ContentPresenter > Grid
+    styles:
+      - Background:=$mbg
+      - CornerRadius=$wcr
+      - BorderThickness=$bt
+      - BorderBrush=$bb
+      - Shadow:=
+  - target: WindowsInternal.ComposableShell.Experiences.TextInput.Common.InputSwitcher > ContentControl > ContentPresenter > Grid > Grid
+    styles:
+      - Background:=$t
   - target: Taskbar.TaskbarBackground#HoverFlyoutBackgroundControl > Grid > Rectangle#BackgroundFill
     styles:
       - Fill:=$t
@@ -388,19 +407,19 @@ controlStyles:
       - BorderThickness@Normal=0
       - BorderBrush@Normal=$t
       - BorderThickness@PointerOver=0.05,0,0.05,2
-      - BorderBrush@PointerOver:=<SolidColorBrush Color="{ThemeResource SystemAccentColorLight2}" Opacity="1.0" />
-  - target: Windows.UI.Xaml.Controls.Button#CloseButton
+      - BorderBrush@PointerOver:=$AccentColor
+  - target: WindowSystemAccentColor.UI.Xaml.Controls.Button#CloseButton
     styles:
       - CornerRadius=$mcr
   - target: Taskbar.ThumbBarButton#ThumbBarButton > Windows.UI.Xaml.Controls.ContentPresenter#BorderElement@CommonStates
     styles:
       - CornerRadius=16
-      - Margin=-1.5,-1.5,-1.5,-1.5
+      - Margin=-1.5
       - Background@Disabled:=$t
       - Background@Normal:=$t
       - Background@PointerOver:=$nbth
       - Background@Pressed:=$nbtp
-      - BorderThickness=$bt2
+      - BorderThickness=2
       - BorderBrush@Disabled:=$t
       - BorderBrush@Normal:=$t
       - BorderBrush@PointerOver:=$nbb
@@ -409,7 +428,7 @@ controlStyles:
       - BackgroundTransition:=<BrushTransition Duration="0:0:0.200" />
   - target: Windows.UI.Xaml.Controls.Grid#ModalRootGrid > Windows.UI.Xaml.Controls.Border#BackgroundElement
     styles:
-      - Background=Transparent
+      - Background=$t
       - CornerRadius=$wcr
       - BorderThickness=$bt
       - BorderBrush=$bb
@@ -417,105 +436,98 @@ controlStyles:
   - target: Windows.UI.Xaml.Controls.Grid#ModalRootGrid > Windows.UI.Xaml.Controls.Border#BackgroundElement > WindowsInternal.ComposableShell.Experiences.Switcher.SwitchItemList
     styles:
       - Background:=$mbg
+  - target: WindowsInternal.ComposableShell.Experiences.Switcher.DynamicFlowPanel > WindowsInternal.ComposableShell.Experiences.Switcher.SwitchItemListViewItem > Windows.UI.Xaml.Controls.Grid#Root@CommonStates > Windows.UI.Xaml.Controls.Border#BackgroundBorder
+    styles:
+      - Background:=#09FFFFFF
+      - CornerRadius=$wcr
+      - BorderThickness@Normal:=$bt
+      - BorderThickness@PointerOver:=1
+      - BorderThickness@Pressed:=$bt
+      - BorderBrush@Normal:=#15FFFFFF
+      - BorderBrush@PointerOver:=$AccentColor
+      - BorderBrush@Pressed:=#15FFFFFF
+      - Margin@Normal:=0,1,0,0
+      - Margin@PointerOver:=-1,0,-1,-1
+      - Margin@Pressed:=-1,0,-1,-1
+      - BackgroundTransition:=<BrushTransition Duration="0:0:0.200" />
+  - target: WindowsInternal.ComposableShell.Experiences.Switcher.VirtualDesktopBarElement > Windows.UI.Xaml.Controls.Grid#GridElement > Windows.UI.Xaml.Controls.Border#VirtualDesktopSwitcherBackground
+    styles:
+      - CornerRadius=$wcr
+      - BorderThickness=$bt
+      - BorderBrush=$bb
+      - Margin=-2,1,-1,2
   - target: Windows.UI.Xaml.Controls.Border#BackgroundDimmingLayer
     styles:
-      - Background:=<WindhawkBlur BlurAmount="0" TintColor="#00000000" />
+      - Background:=$t
+  - target: WindowsInternal.ComposableShell.Experiences.Switcher.DynamicFlowPanel#DFCPanel > WindowsInternal.ComposableShell.Experiences.Switcher.SwitchItemListViewItem > Windows.UI.Xaml.Controls.Grid#Root@CommonStates > Windows.UI.Xaml.Controls.Border#BackgroundBorder
+    styles:
+      - Background:=$mbg
+      - CornerRadius=$wcr
+      - BorderThickness@Normal:=$bt
+      - BorderThickness@PointerOver:=1
+      - BorderThickness@Pressed:=#bt
+      - BorderBrush@Normal:=$bb
+      - BorderBrush@PointerOver:=$AccentColor
+      - BorderBrush@Pressed:=$bb
+      - Margin@Normal:=0,1,0,0
+      - Margin@PointerOver:=-1,0,-1,-1
+      - Margin@Pressed:=-1,0,-1,-1
+      - BackgroundTransition:=<BrushTransition Duration="0:0:0.200" />
+  - target: WindowsInternal.ComposableShell.Experiences.Switcher.SwitchItemElement > Windows.UI.Xaml.Controls.Grid#RootGrid > Windows.UI.Xaml.Controls.Grid#TitleGrid > Windows.UI.Xaml.Controls.Border#BackgroundBorder
+    styles:
+      - Background:=$t
+  - target: WindowsInternal.ComposableShell.Experiences.Switcher.SwitchItemElement > Windows.UI.Xaml.Controls.Grid#RootGrid > Windows.UI.Xaml.Controls.Grid#TitleGrid > Image#IconImage
+    styles:
+      - RenderTransform:=<TranslateTransform X="0" Y="1" />
+  - target: WindowsInternal.ComposableShell.Experiences.Switcher.SwitchItemElement > Windows.UI.Xaml.Controls.Grid#RootGrid > Windows.UI.Xaml.Controls.Grid#TitleGrid > TextBlock#DisplayName
+    styles:
+      - RenderTransform:=<TranslateTransform X="0" Y="1" />
+  - target: Windows.UI.Xaml.Controls.Button#SwitchItemElementCloseButton > ContentPresenter#ContentPresenter
+    styles:
+      - CornerRadius=$mcr
+      - Margin=5
+  - target: Windows.UI.Xaml.Controls.Button#SwitchItemElementCloseButton > ContentPresenter#ContentPresenter > TextBlock
+    styles:
+      - RenderTransform:=<TranslateTransform X="-0.8" Y="-0.6" />
+  - target: WindowsInternal.ComposableShell.Experiences.Switcher.SwitchItemThumbnailButton#ThumbnailHost > Windows.UI.Xaml.Controls.Grid#RootGrid
+    styles:
+      - CornerRadius=$wcr
+      - Margin=5
   - target: WindowsInternal.ComposableShell.Experiences.Switcher.VirtualDesktopBarElement#VirtualDesktopBar > Grid > Border
     styles:
       - Background:=$mbg
       - CornerRadius=$wcr
       - BorderThickness=$bt
       - BorderBrush=$bb
-      - Margin=0,2,0,-1
+      - Margin=-1,2,0,0
   - target: WindowsInternal.ComposableShell.Experiences.Switcher.VirtualDesktopBarElement#VirtualDesktopBar
     styles:
       - Width=Auto
       - HorizontalAlignment=1
-  - target: WindowsInternal.ComposableShell.Experiences.Switcher.VirtualDesktopBarElement > Windows.UI.Xaml.Controls.Grid#GridElement > Windows.UI.Xaml.Controls.Border#VirtualDesktopSwitcherBackground
-    styles:
-      - BorderThickness=$bt
-      - BorderBrush=$bb
-      - CornerRadius=$mcr
-      - Margin=0,2,0,2
   - target: WindowsInternal.ComposableShell.Experiences.Switcher.VirtualDesktopBarElement > Grid > Border
     styles:
       - Background:=$mbg
       - Shadow:=
-  - target: WindowsInternal.ComposableShell.Experiences.Switcher.VirtualDesktopElementThemed > Windows.UI.Xaml.Controls.Grid#MainGrid@CommonStates
-    styles:
-      - CornerRadius=$mcr
-      - Background@PointerOverListItem:=$nbth
-      - Background@PointerNotOverListItem:=$t
-      - Background@NotActiveDesktop:=$t
-      - Background@NotActiveDesktopPointerOver:=$t
-      - Background@NotActiveDesktopPointerOver2:=$t
-      - Background@NotActiveDesktopDragOver:=$t
-      - Background@ActivityStateFocused:=$nbt
-      - Background@ActiveDesktop:=$nbt
-      - Background@ActiveDesktopPointerOver:=$nbth
-      - Background@ActiveDesktopPointerOver2:=$nbth
-      - Background@ActiveDesktopDragOver:=$nbtp
-      - Background@RenameVirtualDesktop:=$nbth
-      - Background@RenameVirtualDesktopFinished:=$nbth
-      - BorderThickness=$bt2
-      - BorderBrush@PointerOverListItem:=$nbb
-      - BorderBrush@PointerNotOverListItem:=$t
-      - BorderBrush@NotActiveDesktop:=$t
-      - BorderBrush@NotActiveDesktopPointerOver:=$t
-      - BorderBrush@NotActiveDesktopPointerOver2:=$t
-      - BorderBrush@NotActiveDesktopDragOver:=$t
-      - BorderBrush@NotActiveDesktop:=$t
-      - BorderBrush@ActivityStateFocused:=$nbb
-      - BorderBrush@ActiveDesktop:=$nbb
-      - BorderBrush@ActiveDesktopPointerOver:=$nbb
-      - BorderBrush@ActiveDesktopPointerOver2:=$nbb
-      - BorderBrush@ActiveDesktopDragOver:=$nbb
-      - BorderBrush@RenameVirtualDesktop:=$nbb
-      - BorderBrush@RenameVirtualDesktopFinished:=$nbb
-      - BackgroundSizing=InnerBorderEdge
-      - BackgroundTransition:=<BrushTransition Duration="0:0:0.100" />
   - target: WindowsInternal.ComposableShell.Experiences.Switcher.VirtualDesktopElementThemed > Windows.UI.Xaml.Controls.Grid#MainGrid > Windows.UI.Xaml.Controls.Border#MainBorder
     styles:
       - CornerRadius=$mcr
   - target: WindowsInternal.ComposableShell.Experiences.Switcher.VirtualDesktopElementThemed > Windows.UI.Xaml.Controls.Grid#MainGrid > Windows.UI.Xaml.Controls.Border#BorderHighlight
     styles:
       - CornerRadius=$mcr
-  - target: WindowsInternal.ComposableShell.Experiences.Switcher.VirtualDesktopElementThemed > Windows.UI.Xaml.Controls.Grid#MainGrid > Windows.UI.Xaml.Controls.Border#ActiveDesktopPill
+  - target: WindowsInternal.ComposableShell.Experiences.Switcher.NewVirtualDesktopElementThemed#NewVirtualDesktopButtonThemed > Windows.UI.Xaml.Controls.Grid#MainGrid
     styles:
       - CornerRadius=$mcr
-  - target: WindowsInternal.ComposableShell.Experiences.Switcher.NewVirtualDesktopElementThemed#NewVirtualDesktopButtonThemed > Windows.UI.Xaml.Controls.Grid#MainGrid@CommonStates
-    styles:
-      - CornerRadius=$mcr
-      - Margin=2,2,2,2
-      - Background@DragOver:=$t
-      - Background@NotDragOver :=$t
-      - Background@NotActiveDesktopPointerOver:=$nbth
-      - BorderThickness=$bt2
-      - BorderBrush@DragOver:=$t
-      - BorderBrush@NotDragOver :=$t
-      - BorderBrush@NotActiveDesktopPointerOver:=$nbb
-      - BackgroundSizing=InnerBorderEdge
-      - BackgroundTransition:=<BrushTransition Duration="0:0:0.100" />
+      - BorderThickness=$bt
+      - Margin=2
   - target: WindowsInternal.ComposableShell.Experiences.Switcher.NewVirtualDesktopElementThemed#NewVirtualDesktopButtonThemed > Windows.UI.Xaml.Controls.Grid#MainGrid > Windows.UI.Xaml.Controls.Border#MainBorder
     styles:
       - CornerRadius=$mcr
   - target: WindowsInternal.ComposableShell.Experiences.Switcher.NewVirtualDesktopElementThemed#NewVirtualDesktopButtonThemed > Windows.UI.Xaml.Controls.Grid#MainGrid > Windows.UI.Xaml.Controls.Border#BorderHighlight
     styles:
       - CornerRadius=$mcr
-  - target: WindowsInternal.ComposableShell.Experiences.Switcher.NewVirtualDesktopElementThemed#NewVirtualDesktopButtonThemed > Windows.UI.Xaml.Controls.Grid#MainGrid > Windows.UI.Xaml.Controls.Border#ActiveDesktopPill
+  - target: WindowsInternal.ComposableShell.Experiences.Switcher.VirtualDesktopThumbnailButton#ThumbnailButtonElement
     styles:
-      - CornerRadius=$mcr
-  - target: WindowsInternal.ComposableShell.Experiences.Switcher.SwitchItemListViewItem > Windows.UI.Xaml.Controls.Border#BackgroundBorder
-    styles:
-      - Background:=$mbg
-      - CornerRadius=$mcr
-      - BorderThickness=$bt
-      - BorderBrush=$bb
-  - target: WindowsInternal.ComposableShell.Experiences.Switcher.SwitchItemThumbnailButton#ThumbnailHost > Windows.UI.Xaml.Controls.Grid#RootGrid
-    styles:
-      - CornerRadius=$mcr
-      - BorderThickness=$bt
-      - BorderBrush=$bb
+      - CornerRadius=$bcr
   - target: Windows.UI.Xaml.Controls.Button#VirtualDesktopElementCloseButton
     styles:
       - CornerRadius=$bcr
@@ -525,8 +537,6 @@ controlStyles:
       - CornerRadius=$mcr
       - BorderThickness=$bt
       - BorderBrush=$bb
-      - RenderTransform:=<TranslateTransform X="0" Y="-20" />
-      - Margin=0,0,0,-10
       - Shadow:=
   - target: Windows.UI.Xaml.Controls.Border#SnapPickerBorder
     styles:
@@ -589,15 +599,12 @@ controlStyles:
   - target: Taskbar.TaskListButtonPanel#ExperienceToggleButtonRootPanel > Windows.UI.Xaml.Controls.Grid#AugmentedEntryPointContentGrid
     styles:
       - RenderTransform:=<TranslateTransform X="0" Y="-1" />
-  - target: Taskbar.AugmentedEntryPointButton#AugmentedEntryPointButton
-    styles:
-      - Margin=0,0,-57,0
   - target: Windows.UI.Xaml.Controls.Border#LargeTicker1
     styles:
       - Margin=0,0,0,-4
   - target: Grid#SystemTrayFrameGrid
     styles:
-      - Margin=$DockTrayGap,0,$DockMargin,0
+      - Margin=-$DockMargin,$DockTrayMarginUp,$DockMargin,$DockTrayMarginDown
       - HorizontalAlignment=Right
 ```
 </details>
