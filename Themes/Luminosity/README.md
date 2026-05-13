@@ -192,7 +192,7 @@ The theme changes the following elements:
 The dock's width changes depending on your **screen resolution** using **horizontal margins**. If you want a custom width, follow this guide.
 
 <details>
-<summary>Click to expand guide</summary>
+<summary>(Click to expand guide)</summary>
 
 Locate and edit these `styleConstants` values:
 
@@ -229,6 +229,23 @@ Then: `DockMarginFix=10`
  
 ---
 
+### Disabling Dock Top Gap
+
+Set the following style constants to these values:
+
+<details>
+<summary>(Click to expand guide)</summary>
+  
+```yaml
+  - DockHeight=53
+  - DockTopGap=0
+  - DockTrayMarginUp=-2
+  - DockTrayMarginDown=4
+```
+</details>
+
+---
+
 ### Left Taskbar Alignment Fix
 
 <details>
@@ -238,7 +255,7 @@ When using **Left Taskbar Alignment** with Widget, remove the **minus sign** (`-
 
 Like this: `WidgetGap=`
 
-**Note:** `WidgetGap` is off by default on the Classic variant.
+**Note:** The **Classic** variant is compatible by default.
 </details>
 
 ---
@@ -255,7 +272,7 @@ Removing the last target allows external mods to change the height, though the m
 ```yaml
   - target: Taskbar.TaskbarFrame
     styles:
-      - Height=$Height
+      - Height=$DockHeight
 ```
 
 </details>
@@ -267,7 +284,7 @@ Removing the last target allows external mods to change the height, though the m
 Follow this guide to customize the animation behavior.
 
 <details>
-<summary>Click to expand guide</summary>
+<summary>(Click to expand guide)</summary>
 
 To customize the animations, look for this style constant 
 ```
@@ -287,7 +304,7 @@ AnimationSettings=IsStaggeringEnabled="True" FromHorizontalOffset="-50" FromVert
 
 I didn't know how to fix these. I couldn't find the correct target names, or I'm not sure if they can even be changed/fixed.
 
-- **Left Taskbar Alignment (Dock):** **Left Taskbar Alignment** is not compatible by default. Refer to the [Left Taskbar Alignment Fix Guide](https://github.com/ramensoftware/windows-11-taskbar-styling-guide/tree/main/Themes/Luminosity/README.md#left-taskbar-alignment-fix).
+- **Left Taskbar Alignment (Dock/Compact):** **Left Taskbar Alignment** is not compatible by default. Refer to the [Left Taskbar Alignment Fix Guide](https://github.com/ramensoftware/windows-11-taskbar-styling-guide/tree/main/Themes/Luminosity/README.md#left-taskbar-alignment-fix).
 - **Taskbar height and icon size Mod (Dock):** `Taskbar height and icon size` is not compatible, but you can edit manually. Refer to [Taskbar height and icon size Compatibility Guide](https://github.com/ramensoftware/windows-11-taskbar-styling-guide/tree/main/Themes/Luminosity/README.md#taskbar-height-and-icon-size-compatibility).
 - **Icon Hitboxes (Dock):** The Taskbar's rounded corners slightly limit the icon hitbox on the **top and bottom**, which makes it **impossible to minimize windows by clicking in those areas**.
 - **SearchBox (Dock/Classic):** Has **mismatched look and position** when typing.
@@ -324,7 +341,8 @@ The theme styles can also be imported manually. To do that, follow these steps:
 styleConstants:
   - DockMargin=250
   - DockMarginFix=500
-  - Height=58
+  - DockHeight=58
+  - DockTopGap=5
   - DockTrayMarginUp=1
   - DockTrayMarginDown=1
   - WidgetGap=-
@@ -345,9 +363,6 @@ controlStyles:
   - target: Taskbar.TaskbarFrame > Grid#RootGrid > Taskbar.TaskbarBackground > Grid > Rectangle#BackgroundFill
     styles:
       - Fill:=$mbg
-  - target: Taskbar.AugmentedEntryPointButton#AugmentedEntryPointButton
-    styles:
-      - Margin=0,0,$WidgetGap57,0
   - target: Taskbar.TaskListButtonPanel#ExperienceToggleButtonRootPanel > Windows.UI.Xaml.Controls.Border#BackgroundElement
     styles:
       - CornerRadius=$bcr
@@ -605,9 +620,9 @@ controlStyles:
     styles:
       - Background:=$mbg
       - BorderThickness=$bt
-      - BorderBrush:=$bb
+      - BorderBrush=$bb
       - CornerRadius=$mcr
-      - Margin=0,5,$DockMarginFix,5
+      - Margin=0,$DockTopGap,$DockMarginFix,5
   - target: Taskbar.TaskbarBackground#BackgroundControl > Windows.UI.Xaml.Controls.Grid > Windows.UI.Xaml.Shapes.Rectangle#BackgroundStroke
     styles:
       - Visibility=Collapsed
@@ -616,14 +631,17 @@ controlStyles:
       - RenderTransform:=<TranslateTransform X="0" Y="-1" />
   - target: Windows.UI.Xaml.Controls.Border#LargeTicker1
     styles:
-      - Margin=0,0,0,-4
+      - Margin=0,0,0,-2
+  - target: Taskbar.AugmentedEntryPointButton#AugmentedEntryPointButton
+    styles:
+      - Margin=0,0,$WidgetGap57,0
   - target: Grid#SystemTrayFrameGrid
     styles:
       - Margin=-$DockMargin,$DockTrayMarginUp,$DockMargin,$DockTrayMarginDown
       - HorizontalAlignment=Right
   - target: Taskbar.TaskbarFrame
     styles:
-      - Height=$Height
+      - Height=$DockHeight
 ```
 </details>
 
@@ -636,7 +654,6 @@ controlStyles:
 
 ```yaml
 styleConstants:
-  - WidgetGap=
   - AccentColor=<SolidColorBrush Color="{ThemeResource SystemAccentColorLight2}" Opacity="1.0" />
   - AnimationSettings=IsStaggeringEnabled="True" FromHorizontalOffset="-50" FromVerticalOffset="50"
   - mbg=<WindhawkBlur BlurAmount="30" TintColor="{ThemeResource CardStrokeColorDefaultSolid}" TintOpacity="0.0" TintLuminosityOpacity="1.0" TintSaturation="1.0" NoiseDensity="1.0" NoiseOpacity="0.1" />
@@ -654,9 +671,6 @@ controlStyles:
   - target: Taskbar.TaskbarFrame > Grid#RootGrid > Taskbar.TaskbarBackground > Grid > Rectangle#BackgroundFill
     styles:
       - Fill:=$mbg
-  - target: Taskbar.AugmentedEntryPointButton#AugmentedEntryPointButton
-    styles:
-      - Margin=0,0,$WidgetGap57,0
   - target: Taskbar.TaskListButtonPanel#ExperienceToggleButtonRootPanel > Windows.UI.Xaml.Controls.Border#BackgroundElement
     styles:
       - CornerRadius=$bcr
@@ -1211,6 +1225,9 @@ controlStyles:
   - target: Taskbar.TaskListButton#TaskListButton > Taskbar.TaskListLabeledButtonPanel#IconPanel > Windows.UI.Xaml.Controls.TextBlock#LabelControl
     styles:
       - RenderTransform:=<TranslateTransform X="0" Y="-1" />
+  - target: Taskbar.AugmentedEntryPointButton#AugmentedEntryPointButton
+    styles:
+      - Margin=0,0,$WidgetGap57,0
   - target: Grid#SystemTrayFrameGrid
     styles:
       - Margin=0,0,0,18
