@@ -304,8 +304,8 @@ AnimationSettings=IsStaggeringEnabled="True" FromHorizontalOffset="-50" FromVert
 
 I didn't know how to fix these. I couldn't find the correct target names, or I'm not sure if they can even be changed/fixed.
 
-- **Left Taskbar Alignment (Dock/Compact):** **Left Taskbar Alignment** is not compatible by default. Refer to the [Left Taskbar Alignment Fix Guide](https://github.com/ramensoftware/windows-11-taskbar-styling-guide/tree/main/Themes/Luminosity/README.md#left-taskbar-alignment-fix).
-- **Taskbar height and icon size Mod (Dock):** `Taskbar height and icon size` is not compatible, but you can edit manually. Refer to [Taskbar height and icon size Compatibility Guide](https://github.com/ramensoftware/windows-11-taskbar-styling-guide/tree/main/Themes/Luminosity/README.md#taskbar-height-and-icon-size-compatibility).
+- **Left Taskbar Alignment (Dock/Compact):** **Left Taskbar Alignment** is not compatible by default. Refer to the [Left Taskbar Alignment Fix Guide](#left-taskbar-alignment-fix).
+- **Taskbar height and icon size Mod (Dock):** `Taskbar height and icon size` is not compatible, but you can edit manually. Refer to [Taskbar height and icon size Compatibility Guide](#taskbar-height-and-icon-size-compatibility).
 - **Icon Hitboxes (Dock):** The Taskbar's rounded corners slightly limit the icon hitbox on the **top and bottom**, which makes it **impossible to minimize windows by clicking in those areas**.
 - **SearchBox (Dock/Classic):** Has **mismatched look and position** when typing.
 - **SearchBox (Compact):** Has incorrect styling and positioning in the Compact version.
