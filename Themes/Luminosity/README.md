@@ -172,8 +172,8 @@ The theme changes the following elements:
 
 
   ![Task View](taskview.png)
-  
-  
+
+
   ![Virtual Desktops Bar](virtualdesktopsbar.png)
 
 
@@ -226,7 +226,7 @@ If: `DockMargin=5`
 
 Then: `DockMarginFix=10`
 </details>
- 
+
 ---
 
 ### Disabling Dock Top Gap
@@ -235,7 +235,7 @@ Set the following style constants to these values:
 
 <details>
 <summary>(Click to expand guide)</summary>
-  
+
 ```yaml
   - DockHeight=53
   - DockTopGap=0
@@ -286,7 +286,7 @@ Follow this guide to customize the animation behavior.
 <details>
 <summary>(Click to expand guide)</summary>
 
-To customize the animations, look for this style constant 
+To customize the animations, look for this style constant:
 ```
 AnimationSettings=IsStaggeringEnabled="True" FromHorizontalOffset="-50" FromVerticalOffset="50"
 ```
