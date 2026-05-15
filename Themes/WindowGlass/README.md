@@ -102,7 +102,7 @@ styleConstants:
 controlStyles:
   - target: Taskbar.TaskbarFrame
     styles:
-      - MaxWidth:=$TaskbarFrameMaxWidth
+      - MaxWidth={{min($TaskbarFrameMaxWidth, containerGridWidth)}}
       - Width=Auto
       - MinWidth:=100
       - Grid.Column=1
@@ -143,9 +143,10 @@ controlStyles:
       - //BorderBrush:=$BorderBrush
       - BorderThickness=0,1,0.5,1
       - CornerRadius=0,25,25,0
-  - target: Windows.UI.Xaml.Controls.ScrollContentPresenter > Windows.UI.Xaml.Controls.Border > Windows.UI.Xaml.Controls.Grid
+  - target: ':root > ScrollViewer > ScrollContentPresenter > Border > Grid'
     styles:
       - ColumnDefinitions:=<ColumnDefinitionCollection><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></ColumnDefinitionCollection>
+      - ActualWidth=>containerGridWidth
   - target: SystemTray.ChevronIconView
     styles:
       - Padding=6,0,6,0
@@ -346,7 +347,8 @@ styleConstants:
 controlStyles:
   - target: Taskbar.TaskbarFrame
     styles:
-      - MaxWidth:=$TaskbarFrameMaxWidth
+      - Grid.Column=1
+      - MaxWidth={{min($TaskbarFrameMaxWidth, containerGridWidth)}}
       - Width=Auto
       - MinWidth:=100
   - target: Taskbar.TaskbarFrame > Grid#RootGrid
@@ -548,14 +550,10 @@ controlStyles:
       - BorderBrush:=$BorderBrush
       - BorderThickness=$BorderThickness
       - CornerRadius=$CornerRadius
-  - target: Windows.UI.Xaml.Controls.ScrollContentPresenter > Windows.UI.Xaml.Controls.Border > Windows.UI.Xaml.Controls.Grid
+  - target: ':root > ScrollViewer > ScrollContentPresenter > Border > Grid'
     styles:
       - ColumnDefinitions:=<ColumnDefinitionCollection><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></ColumnDefinitionCollection>
-  - target: Taskbar.TaskbarFrame
-    styles:
-      - Grid.Column=1
-      - Width=Auto
-      - MaxWidth=$TaskbarFrameMaxWidth
+      - ActualWidth=>containerGridWidth
 ```
 </details>
 
